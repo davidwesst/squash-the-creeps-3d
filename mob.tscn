@@ -1,10 +1,43 @@
-[gd_scene load_steps=4 format=3 uid="uid://c2o1xainl1tnd"]
+[gd_scene load_steps=6 format=3 uid="uid://c2o1xainl1tnd"]
 
 [ext_resource type="Script" path="res://mob.gd" id="1_ddehg"]
 [ext_resource type="PackedScene" uid="uid://dvc372u26rljb" path="res://art/mob.glb" id="2_gclcm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qu723"]
 size = Vector3(1.59061, 1.24776, 2.10588)
+
+[sub_resource type="Animation" id="Animation_l8jiq"]
+resource_name = "float"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.2, 0.7),
+"transitions": PackedFloat32Array(0.420448, 2.07053),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.65, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot/Character:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1, 0.5),
+"transitions": PackedFloat32Array(0.420448, 0.466517),
+"update": 0,
+"values": [Vector3(0.139626, 0, 0), Vector3(-0.15708, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1muuk"]
+_data = {
+"float": SubResource("Animation_l8jiq")
+}
 
 [node name="Mob" type="CharacterBody3D" groups=["mob"]]
 collision_layer = 2
@@ -14,11 +47,18 @@ script = ExtResource("1_ddehg")
 [node name="Pivot" type="Node3D" parent="."]
 
 [node name="Character" parent="Pivot" instance=ExtResource("2_gclcm")]
+transform = Transform3D(1, 0, 0, 0, 0.999987, 0.0050891, 0, -0.0050891, 0.999987, 0, 0.649242, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_qu723")
 
 [node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
 aabb = AABB(-1.25404, -1, -1.98265, 2.50808, 2, 3.9653)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "float"
+libraries = {
+"": SubResource("AnimationLibrary_1muuk")
+}
 
 [connection signal="screen_exited" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_exited"]

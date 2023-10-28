@@ -10,8 +10,6 @@ func _on_mob_timer_timeout():
 	var mob_spawn_location = get_node("SpawnPath/SpawnLocation")
 	mob_spawn_location.progress_ratio = randf()
 	
-	mob.squashed.connect($UserInterface/ScoreLabel._on_mob_squashed.bind())
-	
 	var player_position = $Player.position
 	mob.initialize(mob_spawn_location.position, player_position)
 	mob.squashed.connect($UserInterface/ScoreLabel._on_mob_squashed.bind())
